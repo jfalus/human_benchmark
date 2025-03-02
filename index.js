@@ -130,8 +130,8 @@
                 return
             }
 
-            const nodes = xpath_get_nodes("//div[@data-cellnumber]", elem)
-            nodes.sort((a, b) => parseInt(a.attributes.getNamedItem('data-cellnumber').value) - parseInt(b.attributes.getNamedItem('data-cellnumber').value))
+            const nodes = [...document.querySelectorAll("[data-cellnumber]")]
+            nodes.sort((a, b) => +a.dataset.cellnumber-b.dataset.cellnumber)
             for (let node of nodes) {
                 await wait(25)
                 node.click()
@@ -298,14 +298,6 @@
         return document
             .evaluate(selector, elem, null, XPathResult.ANY_UNORDERED_NODE_TYPE)
             ?.singleNodeValue
-    }
-
-    function xpath_get_nodes(selector, elem) {
-        const xPathResult = document.evaluate(selector, elem, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE)
-        const nodes = [];
-        let node = null;
-        while ((node = xPathResult.iterateNext())) nodes.push(node);
-        return nodes
     }
 
     function prepLocationChange() {
